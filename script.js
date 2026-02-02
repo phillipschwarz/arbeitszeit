@@ -1,0 +1,407 @@
+// Supabase Configuration
+const SUPABASE_URL = 'https://nqdvekbcpzrxalyztnjg.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5xZHZla2JjcHpyeGFseXp0bmpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwNTUyMjIsImV4cCI6MjA4NTYzMTIyMn0.W30xUJamhMVUPSU_YB6_kbpU0nZS35YhPI0Nx1-0yxM';
+
+// Job rates (€/hour)
+const JOB_RATES = {
+    'Ganztag': 15,
+    'Hausaufgabenbetreuung': 14,
+    'Freitagsbetreuung': 14
+};
+
+// Supabase client (initialized after DOM load)
+let db = null;
+
+// Data storage
+let entries = [];
+
+// Initialize
+document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize Supabase
+    try {
+        db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log('Supabase initialized');
+    } catch (error) {
+        console.error('Failed to initialize Supabase:', error);
+        alert('Fehler beim Initialisieren von Supabase');
+        return;
+    }
+    
+    await loadEntries();
+    showDashboard();
+    
+    // Set today's date as default
+    const today = new Date().toISOString().split('T')[0];
+    const dateInput = document.getElementById('dateInput');
+    if (dateInput) {
+        dateInput.value = today;
+    }
+});
+
+// Load entries from Supabase
+async function loadEntries() {
+    try {
+        const { data, error } = await db
+            .from('arbeitszeit_entries')
+            .select('*')
+            .order('date', { ascending: false });
+
+        if (error) throw error;
+
+        entries = data || [];
+    } catch (error) {
+        console.error('Error loading entries:', error);
+        alert('Fehler beim Laden der Daten: ' + error.message);
+    }
+}
+
+// Navigation
+function showDashboard() {
+    setActiveView('dashboardView');
+    renderDashboard();
+    closeMenu();
+}
+
+function showAddPage() {
+    setActiveView('addView');
+    // Set today's date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('dateInput').value = today;
+    closeMenu();
+}
+
+function showMonthsPage() {
+    setActiveView('monthsView');
+    renderMonthsList();
+    closeMenu();
+}
+
+function showMonthDetail(year, month) {
+    setActiveView('monthDetailView');
+    renderMonthDetail(year, month);
+}
+
+function showRemovePage() {
+    setActiveView('removeView');
+    renderRemoveList();
+    closeMenu();
+}
+
+function setActiveView(viewId) {
+    document.querySelectorAll('.view').forEach(view => {
+        view.classList.remove('active');
+    });
+    document.getElementById(viewId).classList.add('active');
+}
+
+// Toggle dropdown menu
+function toggleMenu() {
+    const dropdown = document.getElementById('menuDropdown');
+    const arrow = document.getElementById('menuArrow');
+    dropdown.classList.toggle('show');
+    arrow.classList.toggle('open');
+}
+
+function closeMenu() {
+    const dropdown = document.getElementById('menuDropdown');
+    const arrow = document.getElementById('menuArrow');
+    dropdown.classList.remove('show');
+    arrow.classList.remove('open');
+}
+
+// Close dropdown when clicking outside
+window.onclick = function(event) {
+    if (!event.target.matches('.menu-btn') && !event.target.matches('#menuArrow')) {
+        closeMenu();
+    }
+}
+
+// Add hours
+async function addHours() {
+    const jobType = document.getElementById('jobType').value;
+    const hours = parseFloat(document.getElementById('hoursInput').value);
+    const date = document.getElementById('dateInput').value;
+
+    if (!jobType || isNaN(hours) || hours <= 0 || !date) {
+        alert('Bitte wähle eine Stelle, gib die Stunden und das Datum ein!');
+        return;
+    }
+
+    const rate = JOB_RATES[jobType];
+    const total = hours * rate;
+
+    try {
+        const { data, error } = await db
+            .from('arbeitszeit_entries')
+            .insert([
+                {
+                    job: jobType,
+                    hours: hours,
+                    rate: rate,
+                    total: total,
+                    date: date
+                }
+            ])
+            .select();
+
+        if (error) throw error;
+
+        // Clear form
+        document.getElementById('jobType').value = '';
+        document.getElementById('hoursInput').value = '';
+
+        // Reload entries and go to dashboard
+        await loadEntries();
+        showDashboard();
+    } catch (error) {
+        console.error('Error adding entry:', error);
+        alert('Fehler beim Hinzufügen: ' + error.message);
+    }
+}
+
+// Render dashboard
+function renderDashboard() {
+    const tbody = document.getElementById('jobTableBody');
+    tbody.innerHTML = '';
+
+    if (entries.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="4" style="text-align: center; color: #888; padding: 2rem;">
+                    Noch keine Einträge. Füge über "Optionen" → "Hinzufügen" Stunden hinzu.
+                </td>
+            </tr>
+        `;
+        document.getElementById('totalAmount').textContent = '0€';
+        return;
+    }
+
+    // Group entries by job type and sum hours
+    const grouped = {};
+    entries.forEach(entry => {
+        if (!grouped[entry.job]) {
+            grouped[entry.job] = {
+                job: entry.job,
+                hours: 0,
+                rate: entry.rate,
+                total: 0
+            };
+        }
+        grouped[entry.job].hours += parseFloat(entry.hours);
+        grouped[entry.job].total += parseFloat(entry.total);
+    });
+
+    // Convert to array and render
+    const groupedArray = Object.values(grouped);
+    groupedArray.forEach((entry, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td style="font-weight: 600;">${index + 1}</td>
+            <td>${entry.job}</td>
+            <td>${entry.hours}</td>
+            <td>${Math.round(entry.total)}€</td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    calculateTotal();
+}
+
+// Calculate total
+function calculateTotal() {
+    const total = entries.reduce((sum, entry) => sum + parseFloat(entry.total), 0);
+    document.getElementById('totalAmount').textContent = `${Math.round(total)}€`;
+}
+
+// Render months list
+function renderMonthsList() {
+    const monthsList = document.getElementById('monthsList');
+    monthsList.innerHTML = '';
+
+    if (entries.length === 0) {
+        monthsList.innerHTML = `
+            <div class="empty-state">
+                Noch keine Einträge vorhanden.
+            </div>
+        `;
+        return;
+    }
+
+    // Group entries by month
+    const monthsData = {};
+    entries.forEach(entry => {
+        const date = new Date(entry.date);
+        const year = date.getFullYear();
+        const month = date.getMonth(); // 0-11
+        const key = `${year}-${month}`;
+
+        if (!monthsData[key]) {
+            monthsData[key] = {
+                year: year,
+                month: month,
+                entries: [],
+                totalHours: 0,
+                totalMoney: 0
+            };
+        }
+
+        monthsData[key].entries.push(entry);
+        monthsData[key].totalHours += parseFloat(entry.hours);
+        monthsData[key].totalMoney += parseFloat(entry.total);
+    });
+
+    // Sort by date (newest first)
+    const sortedMonths = Object.values(monthsData).sort((a, b) => {
+        if (a.year !== b.year) return b.year - a.year;
+        return b.month - a.month;
+    });
+
+    // Render month cards
+    sortedMonths.forEach(monthData => {
+        const monthName = new Date(monthData.year, monthData.month).toLocaleDateString('de-DE', { 
+            month: 'long', 
+            year: 'numeric' 
+        });
+
+        const card = document.createElement('div');
+        card.className = 'month-card';
+        card.onclick = () => showMonthDetail(monthData.year, monthData.month);
+        card.innerHTML = `
+            <div class="month-card-title">${monthName}</div>
+            <div class="month-card-stats">
+                <span>${monthData.entries.length} Einträge</span>
+                <span>${monthData.totalHours} Stunden</span>
+            </div>
+            <div class="month-card-total">${Math.round(monthData.totalMoney)}€</div>
+        `;
+        monthsList.appendChild(card);
+    });
+}
+
+// Render month detail
+function renderMonthDetail(year, month) {
+    const monthName = new Date(year, month).toLocaleDateString('de-DE', { 
+        month: 'long', 
+        year: 'numeric' 
+    });
+    document.getElementById('monthDetailTitle').textContent = monthName;
+
+    // Filter entries for this month
+    const monthEntries = entries.filter(entry => {
+        const date = new Date(entry.date);
+        return date.getFullYear() === year && date.getMonth() === month;
+    });
+
+    // Sort by date (newest first)
+    monthEntries.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    const tbody = document.getElementById('monthDetailTableBody');
+    tbody.innerHTML = '';
+
+    monthEntries.forEach(entry => {
+        const date = new Date(entry.date);
+        const dateStr = date.toLocaleDateString('de-DE', { 
+            day: '2-digit', 
+            month: '2-digit', 
+            year: 'numeric' 
+        });
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${dateStr}</td>
+            <td>${entry.job}</td>
+            <td>${entry.hours}</td>
+            <td>${Math.round(entry.total)}€</td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    // Calculate month total
+    const monthTotal = monthEntries.reduce((sum, entry) => sum + parseFloat(entry.total), 0);
+    document.getElementById('monthDetailTotal').textContent = `${Math.round(monthTotal)}€`;
+}
+
+// Render remove list
+function renderRemoveList() {
+    const removeList = document.getElementById('removeList');
+    removeList.innerHTML = '';
+
+    if (entries.length === 0) {
+        removeList.innerHTML = `
+            <div class="empty-state">
+                Keine Einträge vorhanden.
+            </div>
+        `;
+        return;
+    }
+
+    // Sort by date (newest first)
+    const sortedEntries = [...entries].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    sortedEntries.forEach(entry => {
+        const date = new Date(entry.date);
+        const dateStr = date.toLocaleDateString('de-DE', { 
+            day: '2-digit', 
+            month: '2-digit', 
+            year: 'numeric' 
+        });
+
+        const item = document.createElement('div');
+        item.className = 'remove-item';
+        item.innerHTML = `
+            <div class="remove-item-info">
+                <div class="remove-item-title">${entry.job} • ${dateStr}</div>
+                <div class="remove-item-details">${entry.hours} Stunden • ${Math.round(entry.total)}€</div>
+            </div>
+            <button class="delete-btn" onclick="removeEntry(${entry.id})">Löschen</button>
+        `;
+        removeList.appendChild(item);
+    });
+}
+
+// Remove entry
+async function removeEntry(id) {
+    try {
+        const { error } = await db
+            .from('arbeitszeit_entries')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+
+        await loadEntries();
+        renderRemoveList();
+    } catch (error) {
+        console.error('Error removing entry:', error);
+        alert('Fehler beim Löschen: ' + error.message);
+    }
+}
+
+// Reset all
+async function resetAll() {
+    if (confirm('WIRKLICH alle Daten zurücksetzen? Dies kann nicht rückgängig gemacht werden!')) {
+        try {
+            const { error } = await db
+                .from('arbeitszeit_entries')
+                .delete()
+                .neq('id', 0); // Delete all rows
+
+            if (error) throw error;
+
+            await loadEntries();
+            showDashboard();
+        } catch (error) {
+            console.error('Error resetting data:', error);
+            alert('Fehler beim Zurücksetzen: ' + error.message);
+        }
+    } else {
+        closeMenu();
+    }
+}
+
+// Allow Enter key to submit
+document.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && document.getElementById('addView').classList.contains('active')) {
+        addHours();
+    }
+});

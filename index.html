@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arbeitszeit</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" onclick="showDashboard()" class="nav-brand">arbeitszeit</a>
+        <div class="nav-menu">
+            <button class="menu-btn" onclick="toggleMenu()">Optionen <span id="menuArrow">▾</span></button>
+            <div class="dropdown-content" id="menuDropdown">
+                <a href="#" onclick="showAddPage()">Hinzufügen</a>
+                <a href="#" onclick="showMonthsPage()">Monate</a>
+                <a href="#" onclick="showRemovePage()">Entfernen</a>
+                <a href="#" onclick="resetAll()">Zurücksetzen</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Loading State -->
+        <div id="loadingView" class="view active">
+            <div class="loading-spinner">
+                <h2>Lade Daten...</h2>
+            </div>
+        </div>
+
+        <!-- Dashboard View -->
+        <div id="dashboardView" class="view">
+            <h1>Dashboard</h1>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Stelle</th>
+                            <th>Stunden</th>
+                            <th>Geld</th>
+                        </tr>
+                    </thead>
+                    <tbody id="jobTableBody">
+                        <!-- Rows will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="total">
+                <h2>Gesamt: <span id="totalAmount">0€</span></h2>
+            </div>
+        </div>
+
+        <!-- Add Hours View -->
+        <div id="addView" class="view">
+            <h1>Stunden hinzufügen</h1>
+
+            <div class="add-form">
+                <select id="jobType" class="styled-select">
+                    <option value="" disabled selected>Art der Stelle</option>
+                    <option value="Ganztag">Ganztag</option>
+                    <option value="Hausaufgabenbetreuung">Hausaufgabenbetreuung</option>
+                    <option value="Freitagsbetreuung">Freitagsbetreuung</option>
+                </select>
+
+                <input type="number" id="hoursInput" placeholder="Anzahl der Stunden" step="0.5" min="0" />
+
+                <input type="date" id="dateInput" class="date-input" />
+
+                <button onclick="addHours()" class="submit-btn">Stunden hinzufügen</button>
+            </div>
+        </div>
+
+        <!-- Months View -->
+        <div id="monthsView" class="view">
+            <h1>Monatsübersicht</h1>
+
+            <div id="monthsList" class="months-list">
+                <!-- Month cards will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Month Detail View -->
+        <div id="monthDetailView" class="view">
+            <div class="month-header">
+                <button onclick="showMonthsPage()" class="back-btn">← Zurück</button>
+                <h1 id="monthDetailTitle">Januar 2026</h1>
+            </div>
+
+            <div class="month-detail-content">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Datum</th>
+                                <th>Stelle</th>
+                                <th>Stunden</th>
+                                <th>Geld</th>
+                            </tr>
+                        </thead>
+                        <tbody id="monthDetailTableBody">
+                            <!-- Rows will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="total">
+                    <h2>Gesamt: <span id="monthDetailTotal">0€</span></h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Remove View -->
+        <div id="removeView" class="view">
+            <h1>Entfernen</h1>
+
+            <div class="remove-list" id="removeList">
+                <!-- Items will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
