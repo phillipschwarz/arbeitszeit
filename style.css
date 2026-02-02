@@ -6,16 +6,16 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: #f5f5f5;
-    color: #1a1a1a;
+    background: #0a0a0a;
+    color: #e8e8e8;
     line-height: 1.6;
 }
 
 /* Navbar */
 .navbar {
-    background: white;
-    padding: 1rem 2rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    background: #0f0f0f;
+    padding: 1.2rem 2rem;
+    border-bottom: 1px solid #1a1a1a;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -27,8 +27,13 @@ body {
 .nav-brand {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #1a1a1a;
+    color: #e8e8e8;
     text-decoration: none;
+    transition: color 0.2s;
+}
+
+.nav-brand:hover {
+    color: #00ff00;
 }
 
 .nav-menu {
@@ -36,25 +41,27 @@ body {
 }
 
 .menu-btn {
-    background: #e8e8e8;
-    border: none;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
     padding: 0.6rem 1.2rem;
-    border-radius: 20px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.95rem;
     transition: all 0.2s;
-    color: #1a1a1a;
+    color: #e8e8e8;
     font-weight: 500;
 }
 
 .menu-btn:hover {
-    background: #d8d8d8;
+    background: #2a2a2a;
+    border-color: #00ff00;
 }
 
 #menuArrow {
     display: inline-block;
     transition: transform 0.2s;
     margin-left: 0.3rem;
+    color: #00ff00;
 }
 
 #menuArrow.open {
@@ -65,10 +72,10 @@ body {
     display: none;
     position: absolute;
     right: 0;
-    background: white;
+    background: #1a1a1a;
     min-width: 180px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    border-radius: 12px;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
     margin-top: 0.5rem;
     overflow: hidden;
 }
@@ -78,12 +85,12 @@ body {
 }
 
 .dropdown-content a {
-    color: #1a1a1a;
-    padding: 14px 20px;
+    color: #e8e8e8;
+    padding: 12px 18px;
     text-decoration: none;
     display: block;
-    transition: background 0.2s;
-    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s;
+    border-bottom: 1px solid #2a2a2a;
 }
 
 .dropdown-content a:last-child {
@@ -91,12 +98,13 @@ body {
 }
 
 .dropdown-content a:hover {
-    background: #f5f5f5;
+    background: #2a2a2a;
+    color: #00ff00;
 }
 
 /* Container */
 .container {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 3rem auto;
     padding: 0 2rem;
 }
@@ -105,8 +113,14 @@ h1 {
     text-align: center;
     margin-bottom: 3rem;
     font-size: 2.5rem;
-    color: #1a1a1a;
+    color: #e8e8e8;
     font-weight: 700;
+}
+
+h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: #e8e8e8;
 }
 
 /* Views */
@@ -118,11 +132,18 @@ h1 {
     display: block;
 }
 
+/* Loading View */
+.loading-spinner {
+    text-align: center;
+    padding: 5rem 2rem;
+    color: #666;
+}
+
 /* Table */
 .table-container {
-    background: white;
+    background: #0f0f0f;
     border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 1px solid #1a1a1a;
     overflow: hidden;
     margin-bottom: 2rem;
 }
@@ -133,8 +154,8 @@ table {
 }
 
 thead {
-    background: #fafafa;
-    border-bottom: 2px solid #e8e8e8;
+    background: #1a1a1a;
+    border-bottom: 1px solid #2a2a2a;
 }
 
 th {
@@ -149,8 +170,8 @@ th {
 
 td {
     padding: 1.2rem 1rem;
-    border-bottom: 1px solid #f0f0f0;
-    color: #1a1a1a;
+    border-bottom: 1px solid #1a1a1a;
+    color: #e8e8e8;
 }
 
 tbody tr:last-child td {
@@ -162,7 +183,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-    background: #fafafa;
+    background: #141414;
 }
 
 /* Total */
@@ -174,20 +195,21 @@ tbody tr:hover {
 .total h2 {
     font-size: 2rem;
     margin: 0;
-    color: #1a1a1a;
+    color: #e8e8e8;
     font-weight: 700;
 }
 
-#totalAmount {
-    color: #1a1a1a;
+#totalAmount,
+#monthDetailTotal {
+    color: #00ff00;
 }
 
 /* Add Form */
 .add-form {
-    background: white;
+    background: #0f0f0f;
     padding: 3rem 2rem;
     border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 1px solid #1a1a1a;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -199,15 +221,15 @@ tbody tr:hover {
 .styled-select {
     width: 100%;
     padding: 0.9rem 1.2rem;
-    border: 1px solid #ddd;
-    border-radius: 25px;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
     font-size: 1rem;
-    background: #f0f9f9;
-    color: #1a1a1a;
+    background: #1a1a1a;
+    color: #e8e8e8;
     cursor: pointer;
     transition: all 0.2s;
     appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300ff00' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 1rem center;
     background-size: 1.2rem;
@@ -215,64 +237,70 @@ tbody tr:hover {
 }
 
 .styled-select:hover {
-    border-color: #5dd9c1;
-    background: #e6f7f4;
+    border-color: #00ff00;
+    background-color: #1a1a1a;
 }
 
 .styled-select:focus {
     outline: none;
-    border-color: #5dd9c1;
-    background: white;
+    border-color: #00ff00;
 }
 
 input[type="number"],
 input[type="date"] {
     width: 100%;
     padding: 0.9rem 1.2rem;
-    border: 1px solid #ddd;
-    border-radius: 25px;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
     font-size: 1rem;
     transition: all 0.2s;
+    background: #1a1a1a;
+    color: #e8e8e8;
 }
 
 input[type="number"]:focus,
 input[type="date"]:focus {
     outline: none;
-    border-color: #5dd9c1;
+    border-color: #00ff00;
 }
 
 .date-input {
-    background: white;
+    background: #1a1a1a;
+    color-scheme: dark;
 }
 
-.submit-btn {
-    width: 100%;
+button {
     padding: 0.9rem 1.5rem;
-    background: #5dd9c1;
-    color: #1a1a1a;
+    background: #00ff00;
+    color: #0a0a0a;
     border: none;
-    border-radius: 25px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
     font-weight: 600;
     transition: all 0.2s;
 }
 
-.submit-btn:hover {
-    background: #4bc9b1;
+button:hover {
+    background: #00dd00;
+    transform: translateY(-1px);
+}
+
+.submit-btn {
+    width: 100%;
 }
 
 /* Remove List */
 .remove-list {
-    background: white;
+    background: #0f0f0f;
     border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 1px solid #1a1a1a;
     overflow: hidden;
 }
 
 .remove-item {
     padding: 1.2rem 1.5rem;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid #1a1a1a;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -284,7 +312,7 @@ input[type="date"]:focus {
 }
 
 .remove-item:hover {
-    background: #fafafa;
+    background: #141414;
 }
 
 .remove-item-info {
@@ -293,7 +321,7 @@ input[type="date"]:focus {
 
 .remove-item-title {
     font-weight: 600;
-    color: #1a1a1a;
+    color: #e8e8e8;
     margin-bottom: 0.3rem;
 }
 
@@ -303,24 +331,93 @@ input[type="date"]:focus {
 }
 
 .delete-btn {
-    background: #ff6b6b;
+    background: #ff3333;
     color: white;
-    border: none;
     padding: 0.5rem 1.2rem;
-    border-radius: 20px;
-    cursor: pointer;
+    border-radius: 6px;
     font-size: 0.9rem;
-    transition: all 0.2s;
 }
 
 .delete-btn:hover {
-    background: #ff5252;
+    background: #ff1111;
 }
 
 .empty-state {
     text-align: center;
     padding: 3rem 2rem;
+    color: #666;
+}
+
+/* Months View */
+.months-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.month-card {
+    background: #0f0f0f;
+    border-radius: 12px;
+    border: 1px solid #1a1a1a;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.month-card:hover {
+    border-color: #00ff00;
+    transform: translateY(-2px);
+}
+
+.month-card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #e8e8e8;
+    margin-bottom: 1rem;
+}
+
+.month-card-stats {
+    display: flex;
+    justify-content: space-between;
     color: #888;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.month-card-total {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #00ff00;
+    margin-top: 1rem;
+}
+
+/* Month Detail */
+.month-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.back-btn {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+    color: #e8e8e8;
+}
+
+.back-btn:hover {
+    background: #2a2a2a;
+    border-color: #00ff00;
+    color: #00ff00;
+}
+
+.month-detail-content {
+    /* Styles inherited from main container */
 }
 
 /* Responsive */
@@ -345,81 +442,4 @@ input[type="date"]:focus {
     th, td {
         padding: 1rem 0.5rem;
     }
-}
-
-/* Loading View */
-.loading-spinner {
-    text-align: center;
-    padding: 5rem 2rem;
-    color: #888;
-}
-
-/* Months View */
-.months-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-}
-
-.month-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    padding: 1.5rem;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.month-card:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    transform: translateY(-2px);
-}
-
-.month-card-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 1rem;
-}
-
-.month-card-stats {
-    display: flex;
-    justify-content: space-between;
-    color: #666;
-    font-size: 0.95rem;
-    margin-bottom: 0.5rem;
-}
-
-.month-card-total {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #5dd9c1;
-    margin-top: 1rem;
-}
-
-/* Month Detail */
-.month-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-.back-btn {
-    background: white;
-    border: 1px solid #ddd;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.2s;
-    color: #1a1a1a;
-}
-
-.back-btn:hover {
-    background: #f5f5f5;
-}
-
-.month-detail-content {
-    /* Styles inherited from main container */
 }
