@@ -1,52 +1,122 @@
 # arbeitszeit
 
-Ein minimalistischer Arbeitszeitrechner im OpenClaw-Docs-Stil.
+Ein minimalistischer Arbeitszeitrechner mit Supabase-Backend und Light/Dark Theme.
 
-## Features
+## ✨ Features
 
-- ✅ Stellen mit Stunden und Stundenlohn erfassen
-- ✅ Automatische Gehaltsberechnung
-- ✅ Übersichtliches Dashboard
-- ✅ LocalStorage (Daten bleiben erhalten)
-- ✅ Export als JSON
-- ✅ Statistiken
-- ✅ Responsive Design
+- ✅ **Stunden erfassen** mit automatischer Gehaltsberechnung
+- ✅ **Dashboard** mit Zusammenfassung nach Stellentyp
+- ✅ **Monatsübersicht** mit Kalender-Navigation
+- ✅ **Detailansicht** pro Monat mit Datum-Sortierung
+- ✅ **Light & Dark Mode** mit Theme-Toggle (☀️/🌙)
+- ✅ **Supabase Backend** — Online PostgreSQL-Datenbank
+- ✅ **Auto-Deploy** via Vercel + GitHub
+- ✅ **Responsive Design** im OpenClaw-Docs-Stil
 
-## Verwendung
+## 🚀 Live Demo
 
-Einfach `index.html` im Browser öffnen!
+[arbeitszeit.vercel.app](https://arbeitszeit-j222emdc6-phillipsrabbithole.vercel.app/)
 
-```bash
-open ~/Documents/rabbithole/arbeitszeit/index.html
-```
+## 💼 Stellentypen & Stundenlöhne
 
-## Technologie
+| Stelle                  | Stundenlohn |
+|-------------------------|-------------|
+| Ganztag                 | 15€/h       |
+| Hausaufgabenbetreuung   | 14€/h       |
+| Freitagsbetreuung       | 14€/h       |
 
-- Pure HTML/CSS/JavaScript
-- Keine Dependencies
-- LocalStorage für Datenpersistenz
-- Clean, modernes Design
+## 🛠️ Tech Stack
 
-## Struktur
+- **Frontend:** HTML, CSS (CSS Variables für Theming), Vanilla JavaScript
+- **Database:** Supabase (PostgreSQL mit Row Level Security)
+- **Hosting:** Vercel (Auto-Deploy von GitHub)
+- **Design:** Dark/Light Theme mit OpenClaw Docs-Stil
+
+## 📂 Struktur
 
 ```
 arbeitszeit/
-├── index.html      # Hauptseite
-├── style.css       # Styling (OpenClaw-Stil)
-├── script.js       # Funktionalität
+├── index.html      # Hauptseite mit Navigation
+├── style.css       # Theming (Dark/Light Mode mit CSS Variables)
+├── script.js       # Supabase Integration + UI Logic
 └── README.md       # Diese Datei
 ```
 
-## Beispiel-Einträge
+## 🎨 Design
 
-| Stelle                  | Stunden | Stundenlohn | Gesamt |
-|-------------------------|---------|-------------|--------|
-| Ganztag                 | 4       | 15€         | 60€    |
-| Hausaufgabenbetreuung   | 2       | 14€         | 28€    |
-| Freitagsbetreuung       | 2       | 14€         | 28€    |
+**Dark Mode (Standard):**
+- Hintergrund: `#0a0a0a`
+- Akzentfarbe: `#00ff00` (Grün)
+- Minimalistisch, modern, wie OpenClaw Docs
 
-**Gesamt: 116€**
+**Light Mode:**
+- Hintergrund: `#ffffff`
+- Akzentfarbe: `#00aa00` (Gedämpftes Grün)
+- Sauber, hell, gut lesbar
+
+**Theme wechseln:** Button oben rechts (☀️/🌙)
+
+## 🗄️ Datenbank
+
+Supabase PostgreSQL mit folgender Tabelle:
+
+```sql
+CREATE TABLE arbeitszeit_entries (
+  id BIGSERIAL PRIMARY KEY,
+  job TEXT NOT NULL,
+  hours NUMERIC NOT NULL,
+  rate NUMERIC NOT NULL,
+  total NUMERIC NOT NULL,
+  date DATE NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+**RLS Policy:** Public access (kein Login erforderlich)
+
+## 🚢 Deployment
+
+Automatisches Deployment via Vercel:
+1. Push zu `main` Branch → Production-Deployment
+2. Push zu anderen Branches → Preview-Deployment
+
+```bash
+git add .
+git commit -m "Update"
+git push origin main
+```
+
+→ Vercel deployt automatisch in ~30 Sekunden
+
+## 🧪 Local Development
+
+```bash
+# Repository clonen
+git clone https://github.com/phillipschwarz/arbeitszeit.git
+cd arbeitszeit
+
+# Im Browser öffnen
+open index.html
+```
+
+**Hinweis:** Supabase-Credentials sind im Code (`script.js`). Für Production sollten die in Environment Variables.
+
+## 📝 Verwendung
+
+1. **Hinzufügen:** Stelle, Stunden und Datum eingeben
+2. **Dashboard:** Übersicht nach Stellentyp gruppiert
+3. **Monate:** Kalender-Karten mit Monatsübersicht
+4. **Entfernen:** Einzelne Einträge löschen
+5. **Zurücksetzen:** Alle Daten löschen (mit Bestätigung)
+
+## 🦡 Gebaut von
+
+Chester — mit Phillip's Hilfe
+
+**Entwicklungszeitraum:** 02.02.2026  
+**Commits:** Initial → Dark Theme → Light/Dark Toggle  
+**Status:** ✅ Production-ready
 
 ---
 
-Gebaut von Chester 🦡
+*Powered by Supabase, Vercel & OpenClaw*
