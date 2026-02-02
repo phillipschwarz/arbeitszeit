@@ -10,13 +10,18 @@
 <body>
     <nav class="navbar">
         <a href="#" onclick="showDashboard()" class="nav-brand">arbeitszeit</a>
-        <div class="nav-menu">
-            <button class="menu-btn" onclick="toggleMenu()">Optionen <span id="menuArrow">▾</span></button>
-            <div class="dropdown-content" id="menuDropdown">
-                <a href="#" onclick="showAddPage()">Hinzufügen</a>
-                <a href="#" onclick="showMonthsPage()">Monate</a>
-                <a href="#" onclick="showRemovePage()">Entfernen</a>
-                <a href="#" onclick="resetAll()">Zurücksetzen</a>
+        <div class="nav-controls">
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle" title="Theme wechseln">
+                <span class="theme-icon">☀️</span>
+            </button>
+            <div class="nav-menu">
+                <button class="menu-btn" onclick="toggleMenu()">Optionen <span id="menuArrow">▾</span></button>
+                <div class="dropdown-content" id="menuDropdown">
+                    <a href="#" onclick="showAddPage()">Hinzufügen</a>
+                    <a href="#" onclick="showMonthsPage()">Monate</a>
+                    <a href="#" onclick="showRemovePage()">Entfernen</a>
+                    <a href="#" onclick="resetAll()">Zurücksetzen</a>
+                </div>
             </div>
         </div>
     </nav>

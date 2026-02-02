@@ -1,3 +1,36 @@
+:root {
+    /* Dark theme (default) */
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #0f0f0f;
+    --bg-tertiary: #1a1a1a;
+    --border-color: #1a1a1a;
+    --border-hover: #2a2a2a;
+    --text-primary: #e8e8e8;
+    --text-secondary: #888;
+    --accent: #00ff00;
+    --accent-hover: #00dd00;
+    --button-bg: #1a1a1a;
+    --button-hover: #2a2a2a;
+    --delete-btn: #ff3333;
+    --delete-hover: #ff1111;
+}
+
+[data-theme="light"] {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f8f8;
+    --bg-tertiary: #f0f0f0;
+    --border-color: #e0e0e0;
+    --border-hover: #00ff00;
+    --text-primary: #1a1a1a;
+    --text-secondary: #666;
+    --accent: #00aa00;
+    --accent-hover: #008800;
+    --button-bg: #f0f0f0;
+    --button-hover: #e0e0e0;
+    --delete-btn: #ff3333;
+    --delete-hover: #ff1111;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -6,16 +39,17 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: #0a0a0a;
-    color: #e8e8e8;
+    background: var(--bg-primary);
+    color: var(--text-primary);
     line-height: 1.6;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* Navbar */
 .navbar {
-    background: #0f0f0f;
+    background: var(--bg-secondary);
     padding: 1.2rem 2rem;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -27,13 +61,44 @@ body {
 .nav-brand {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #e8e8e8;
+    color: var(--text-primary);
     text-decoration: none;
     transition: color 0.2s;
 }
 
 .nav-brand:hover {
-    color: #00ff00;
+    color: var(--accent);
+}
+
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.theme-toggle {
+    background: var(--button-bg);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.theme-toggle:hover {
+    background: var(--button-hover);
+    border-color: var(--accent);
+}
+
+.theme-icon {
+    display: block;
+    line-height: 1;
 }
 
 .nav-menu {
@@ -41,27 +106,27 @@ body {
 }
 
 .menu-btn {
-    background: #1a1a1a;
-    border: 1px solid #2a2a2a;
+    background: var(--button-bg);
+    border: 1px solid var(--border-color);
     padding: 0.6rem 1.2rem;
     border-radius: 6px;
     cursor: pointer;
     font-size: 0.95rem;
     transition: all 0.2s;
-    color: #e8e8e8;
+    color: var(--text-primary);
     font-weight: 500;
 }
 
 .menu-btn:hover {
-    background: #2a2a2a;
-    border-color: #00ff00;
+    background: var(--button-hover);
+    border-color: var(--accent);
 }
 
 #menuArrow {
     display: inline-block;
     transition: transform 0.2s;
     margin-left: 0.3rem;
-    color: #00ff00;
+    color: var(--accent);
 }
 
 #menuArrow.open {
@@ -72,9 +137,9 @@ body {
     display: none;
     position: absolute;
     right: 0;
-    background: #1a1a1a;
+    background: var(--bg-tertiary);
     min-width: 180px;
-    border: 1px solid #2a2a2a;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     margin-top: 0.5rem;
     overflow: hidden;
@@ -85,12 +150,12 @@ body {
 }
 
 .dropdown-content a {
-    color: #e8e8e8;
+    color: var(--text-primary);
     padding: 12px 18px;
     text-decoration: none;
     display: block;
     transition: all 0.2s;
-    border-bottom: 1px solid #2a2a2a;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .dropdown-content a:last-child {
@@ -98,8 +163,8 @@ body {
 }
 
 .dropdown-content a:hover {
-    background: #2a2a2a;
-    color: #00ff00;
+    background: var(--button-hover);
+    color: var(--accent);
 }
 
 /* Container */
@@ -113,14 +178,14 @@ h1 {
     text-align: center;
     margin-bottom: 3rem;
     font-size: 2.5rem;
-    color: #e8e8e8;
+    color: var(--text-primary);
     font-weight: 700;
 }
 
 h2 {
     font-size: 1.25rem;
     margin-bottom: 1rem;
-    color: #e8e8e8;
+    color: var(--text-primary);
 }
 
 /* Views */
@@ -136,14 +201,14 @@ h2 {
 .loading-spinner {
     text-align: center;
     padding: 5rem 2rem;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 /* Table */
 .table-container {
-    background: #0f0f0f;
+    background: var(--bg-secondary);
     border-radius: 12px;
-    border: 1px solid #1a1a1a;
+    border: 1px solid var(--border-color);
     overflow: hidden;
     margin-bottom: 2rem;
 }
@@ -154,15 +219,15 @@ table {
 }
 
 thead {
-    background: #1a1a1a;
-    border-bottom: 1px solid #2a2a2a;
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-color);
 }
 
 th {
     padding: 1.2rem 1rem;
     text-align: left;
     font-weight: 600;
-    color: #888;
+    color: var(--text-secondary);
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -170,8 +235,8 @@ th {
 
 td {
     padding: 1.2rem 1rem;
-    border-bottom: 1px solid #1a1a1a;
-    color: #e8e8e8;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
 }
 
 tbody tr:last-child td {
@@ -183,7 +248,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-    background: #141414;
+    background: var(--bg-tertiary);
 }
 
 /* Total */
@@ -195,21 +260,21 @@ tbody tr:hover {
 .total h2 {
     font-size: 2rem;
     margin: 0;
-    color: #e8e8e8;
+    color: var(--text-primary);
     font-weight: 700;
 }
 
 #totalAmount,
 #monthDetailTotal {
-    color: #00ff00;
+    color: var(--accent);
 }
 
 /* Add Form */
 .add-form {
-    background: #0f0f0f;
+    background: var(--bg-secondary);
     padding: 3rem 2rem;
     border-radius: 12px;
-    border: 1px solid #1a1a1a;
+    border: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -221,11 +286,11 @@ tbody tr:hover {
 .styled-select {
     width: 100%;
     padding: 0.9rem 1.2rem;
-    border: 1px solid #2a2a2a;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     font-size: 1rem;
-    background: #1a1a1a;
-    color: #e8e8e8;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
     cursor: pointer;
     transition: all 0.2s;
     appearance: none;
@@ -237,42 +302,48 @@ tbody tr:hover {
 }
 
 .styled-select:hover {
-    border-color: #00ff00;
-    background-color: #1a1a1a;
+    border-color: var(--accent);
 }
 
 .styled-select:focus {
     outline: none;
-    border-color: #00ff00;
+    border-color: var(--accent);
 }
 
 input[type="number"],
 input[type="date"] {
     width: 100%;
     padding: 0.9rem 1.2rem;
-    border: 1px solid #2a2a2a;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     font-size: 1rem;
     transition: all 0.2s;
-    background: #1a1a1a;
-    color: #e8e8e8;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
 }
 
 input[type="number"]:focus,
 input[type="date"]:focus {
     outline: none;
-    border-color: #00ff00;
+    border-color: var(--accent);
 }
 
 .date-input {
-    background: #1a1a1a;
+    background: var(--bg-tertiary);
+}
+
+[data-theme="dark"] .date-input {
     color-scheme: dark;
+}
+
+[data-theme="light"] .date-input {
+    color-scheme: light;
 }
 
 button {
     padding: 0.9rem 1.5rem;
-    background: #00ff00;
-    color: #0a0a0a;
+    background: var(--accent);
+    color: var(--bg-primary);
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -282,7 +353,7 @@ button {
 }
 
 button:hover {
-    background: #00dd00;
+    background: var(--accent-hover);
     transform: translateY(-1px);
 }
 
@@ -292,15 +363,15 @@ button:hover {
 
 /* Remove List */
 .remove-list {
-    background: #0f0f0f;
+    background: var(--bg-secondary);
     border-radius: 12px;
-    border: 1px solid #1a1a1a;
+    border: 1px solid var(--border-color);
     overflow: hidden;
 }
 
 .remove-item {
     padding: 1.2rem 1.5rem;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -312,7 +383,7 @@ button:hover {
 }
 
 .remove-item:hover {
-    background: #141414;
+    background: var(--bg-tertiary);
 }
 
 .remove-item-info {
@@ -321,17 +392,17 @@ button:hover {
 
 .remove-item-title {
     font-weight: 600;
-    color: #e8e8e8;
+    color: var(--text-primary);
     margin-bottom: 0.3rem;
 }
 
 .remove-item-details {
-    color: #888;
+    color: var(--text-secondary);
     font-size: 0.9rem;
 }
 
 .delete-btn {
-    background: #ff3333;
+    background: var(--delete-btn);
     color: white;
     padding: 0.5rem 1.2rem;
     border-radius: 6px;
@@ -339,13 +410,13 @@ button:hover {
 }
 
 .delete-btn:hover {
-    background: #ff1111;
+    background: var(--delete-hover);
 }
 
 .empty-state {
     text-align: center;
     padding: 3rem 2rem;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 /* Months View */
@@ -356,30 +427,30 @@ button:hover {
 }
 
 .month-card {
-    background: #0f0f0f;
+    background: var(--bg-secondary);
     border-radius: 12px;
-    border: 1px solid #1a1a1a;
+    border: 1px solid var(--border-color);
     padding: 1.5rem;
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .month-card:hover {
-    border-color: #00ff00;
+    border-color: var(--accent);
     transform: translateY(-2px);
 }
 
 .month-card-title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #e8e8e8;
+    color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
 .month-card-stats {
     display: flex;
     justify-content: space-between;
-    color: #888;
+    color: var(--text-secondary);
     font-size: 0.95rem;
     margin-bottom: 0.5rem;
 }
@@ -387,7 +458,7 @@ button:hover {
 .month-card-total {
     font-size: 1.75rem;
     font-weight: 700;
-    color: #00ff00;
+    color: var(--accent);
     margin-top: 1rem;
 }
 
@@ -400,20 +471,20 @@ button:hover {
 }
 
 .back-btn {
-    background: #1a1a1a;
-    border: 1px solid #2a2a2a;
+    background: var(--button-bg);
+    border: 1px solid var(--border-color);
     padding: 0.5rem 1rem;
     border-radius: 6px;
     cursor: pointer;
     font-size: 1rem;
     transition: all 0.2s;
-    color: #e8e8e8;
+    color: var(--text-primary);
 }
 
 .back-btn:hover {
-    background: #2a2a2a;
-    border-color: #00ff00;
-    color: #00ff00;
+    background: var(--button-hover);
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 .month-detail-content {

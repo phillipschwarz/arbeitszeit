@@ -9,6 +9,29 @@ const JOB_RATES = {
     'Freitagsbetreuung': 14
 };
 
+// Theme management
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+}
+
+function updateThemeIcon(theme) {
+    const icon = document.querySelector('.theme-icon');
+    if (icon) {
+        icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+}
+
 // Supabase client (initialized after DOM load)
 let db = null;
 
@@ -17,6 +40,9 @@ let entries = [];
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize theme
+    initTheme();
+    
     // Initialize Supabase
     try {
         db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
