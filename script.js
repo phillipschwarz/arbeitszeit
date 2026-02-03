@@ -364,14 +364,7 @@ function renderTrendChart() {
     });
 }
 
-    // Get theme colors
-    const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-    const textColor = isDark ? '#e8e8e8' : '#1a1a1a';
-    const gridColor = isDark ? '#1a1a1a' : '#e0e0e0';
-    const accentColor = isDark ? '#00ff00' : '#00aa00';
-
-    // Group entries by month and calculate totals
-    const monthlyData = {};
+// Bereinigt: Entferne doppelte Logik    const monthlyData = {};
     entries.forEach(entry => {
         const date = new Date(entry.date);
         const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
