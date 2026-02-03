@@ -13,6 +13,8 @@ Ein minimalistischer Arbeitszeitrechner mit Supabase-Backend und Light/Dark Them
 - ✅ **Auto-Deploy** via Vercel + GitHub
 - ✅ **Responsive Design** im OpenClaw-Docs-Stil
 
+Nur eine Testzeile
+
 ## 🚀 Live Demo
 
 **[arbeitszeit-chester.vercel.app](https://arbeitszeit-chester.vercel.app/)**
