@@ -403,28 +403,6 @@ async function removeEntry(id) {
     }
 }
 
-// Reset all
-async function resetAll() {
-    if (confirm('WIRKLICH alle Daten zurücksetzen? Dies kann nicht rückgängig gemacht werden!')) {
-        try {
-            const { error } = await db
-                .from('arbeitszeit_entries')
-                .delete()
-                .neq('id', 0); // Delete all rows
-
-            if (error) throw error;
-
-            await loadEntries();
-            showDashboard();
-        } catch (error) {
-            console.error('Error resetting data:', error);
-            alert('Fehler beim Zurücksetzen: ' + error.message);
-        }
-    } else {
-        closeMenu();
-    }
-}
-
 // Allow Enter key to submit
 document.addEventListener('keypress', (e) => {
     if (e.key === 'Enter' && document.getElementById('addView').classList.contains('active')) {
