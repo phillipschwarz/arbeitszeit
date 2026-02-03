@@ -19,11 +19,11 @@ function initTheme() {
 function toggleTheme() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
+
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     updateThemeIcon(newTheme);
-    
+
     // Re-render chart with new theme colors
     if (trendChart && document.getElementById('dashboardView').classList.contains('active')) {
         renderTrendChart();
@@ -48,7 +48,7 @@ let trendChart = null;
 document.addEventListener('DOMContentLoaded', async () => {
     // Initialize theme
     initTheme();
-    
+
     // Initialize Supabase
     try {
         db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -58,10 +58,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         alert('Fehler beim Initialisieren von Supabase');
         return;
     }
-    
+
     await loadEntries();
     showDashboard();
-    
+
     // Set today's date as default
     const today = new Date().toISOString().split('T')[0];
     const dateInput = document.getElementById('dateInput');
@@ -142,7 +142,7 @@ function closeMenu() {
 }
 
 // Close dropdown when clicking outside
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (!event.target.matches('.menu-btn') && !event.target.matches('#menuArrow')) {
         closeMenu();
     }
@@ -194,7 +194,7 @@ async function addHours() {
 // Render dashboard
 function renderDashboard() {
     renderTrendChart();
-    
+
     const tbody = document.getElementById('jobTableBody');
     tbody.innerHTML = '';
 
@@ -334,7 +334,7 @@ function renderTrendChart() {
                     padding: 12,
                     displayColors: true,
                     callbacks: {
-                        label: function(context) {
+                        label: function (context) {
                             return context.dataset.label + ': ' + context.parsed.y;
                         }
                     }
@@ -364,182 +364,6 @@ function renderTrendChart() {
     });
 }
 
-// Bereinigt: Entferne doppelte Logik    const monthlyData = {};
-    entries.forEach(entry => {
-        const date = new Date(entry.date);
-        const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-        
-        if (!monthlyData[monthKey]) {
-            monthlyData[monthKey] = {
-                hours: 0,
-                money: 0
-            };
-        }
-        
-        monthlyData[monthKey].hours += parseFloat(entry.hours);
-        monthlyData[monthKey].money += parseFloat(entry.total);
-    });
-
-    // Sort by date and prepare data
-    const sortedMonths = Object.keys(monthlyData).sort();
-    const labels = sortedMonths.map(key => {
-        const [year, month] = key.split('-');
-        const date = new Date(year, month - 1);
-        return date.toLocaleDateString('de-DE', { month: 'short', year: 'numeric' });
-    });
-    const hoursData = sortedMonths.map(key => monthlyData[key].hours);
-    const moneyData = sortedMonths.map(key => Math.round(monthlyData[key].money));
-
-    // Destroy old chart if exists
-    if (trendChart) {
-        trendChart.destroy();
-    }
-
-    // Create new chart
-    trendChart = new Chart(canvas, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [
-                {
-                    label: 'Stunden',
-                    data: hoursData,
-                    borderColor: accentColor,
-                    backgroundColor: accentColor + '20',
-                    borderWidth: 2,
-                    tension: 0.4,
-                    fill: true,
-                    yAxisID: 'y'
-                },
-                {
-                    label: 'Geld (€)',
-                    data: moneyData,
-                    borderColor: accentColor + 'aa',
-                    backgroundColor: 'transparent',
-                    borderWidth: 2,
-                    borderDash: [5, 5],
-                    tension: 0.4,
-                    fill: false,
-                    yAxisID: 'y1'
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            interaction: {
-                mode: 'index',
-                intersect: false
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                    labels: {
-                        color: textColor,
-                        font: {
-                            size: 12,
-                            weight: '600'
-                        },
-                        padding: 15,
-                        usePointStyle: true
-                    }
-                },
-                tooltip: {
-                    backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
-                    titleColor: textColor,
-                    bodyColor: textColor,
-                    borderColor: gridColor,
-                    borderWidth: 1,
-                    padding: 12,
-                    displayColors: true,
-                    callbacks: {
-                        label: function(context) {
-                            let label = context.dataset.label || '';
-                            if (label) {
-                                label += ': ';
-                            }
-                            if (context.datasetIndex === 0) {
-                                label += context.parsed.y + ' h';
-                            } else {
-                                label += context.parsed.y + ' €';
-                            }
-                            return label;
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    grid: {
-                        color: gridColor,
-                        drawBorder: false
-                    },
-                    ticks: {
-                        color: textColor,
-                        font: {
-                            size: 11
-                        }
-                    }
-                },
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: 'left',
-                    grid: {
-                        color: gridColor,
-                        drawBorder: false
-                    },
-                    ticks: {
-                        color: textColor,
-                        font: {
-                            size: 11
-                        },
-                        callback: function(value) {
-                            return value + ' h';
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Stunden',
-                        color: textColor,
-                        font: {
-                            size: 12,
-                            weight: '600'
-                        }
-                    }
-                },
-                y1: {
-                    type: 'linear',
-                    display: true,
-                    position: 'right',
-                    grid: {
-                        drawOnChartArea: false,
-                        drawBorder: false
-                    },
-                    ticks: {
-                        color: textColor,
-                        font: {
-                            size: 11
-                        },
-                        callback: function(value) {
-                            return value + ' €';
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Geld',
-                        color: textColor,
-                        font: {
-                            size: 12,
-                            weight: '600'
-                        }
-                    }
-                }
-            }
-        }
-    });
-}
 
 // Calculate total
 function calculateTotal() {
@@ -592,9 +416,9 @@ function renderMonthsList() {
 
     // Render month cards
     sortedMonths.forEach(monthData => {
-        const monthName = new Date(monthData.year, monthData.month).toLocaleDateString('de-DE', { 
-            month: 'long', 
-            year: 'numeric' 
+        const monthName = new Date(monthData.year, monthData.month).toLocaleDateString('de-DE', {
+            month: 'long',
+            year: 'numeric'
         });
 
         const card = document.createElement('div');
@@ -614,9 +438,9 @@ function renderMonthsList() {
 
 // Render month detail
 function renderMonthDetail(year, month) {
-    const monthName = new Date(year, month).toLocaleDateString('de-DE', { 
-        month: 'long', 
-        year: 'numeric' 
+    const monthName = new Date(year, month).toLocaleDateString('de-DE', {
+        month: 'long',
+        year: 'numeric'
     });
     document.getElementById('monthDetailTitle').textContent = monthName;
 
@@ -634,10 +458,10 @@ function renderMonthDetail(year, month) {
 
     monthEntries.forEach(entry => {
         const date = new Date(entry.date);
-        const dateStr = date.toLocaleDateString('de-DE', { 
-            day: '2-digit', 
-            month: '2-digit', 
-            year: 'numeric' 
+        const dateStr = date.toLocaleDateString('de-DE', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
         });
 
         const row = document.createElement('tr');
@@ -674,10 +498,10 @@ function renderRemoveList() {
 
     sortedEntries.forEach(entry => {
         const date = new Date(entry.date);
-        const dateStr = date.toLocaleDateString('de-DE', { 
-            day: '2-digit', 
-            month: '2-digit', 
-            year: 'numeric' 
+        const dateStr = date.toLocaleDateString('de-DE', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
         });
 
         const item = document.createElement('div');
