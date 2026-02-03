@@ -43,6 +43,7 @@ let db = null;
 // Data storage
 let entries = [];
 let trendChart = null;
+let currentMonthYear = null; // Track current month detail view
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
@@ -109,8 +110,17 @@ function showMonthsPage() {
 }
 
 function showMonthDetail(year, month) {
+    currentMonthYear = { year, month };
+    document.getElementById('jobFilter').value = ''; // Reset filter
     setActiveView('monthDetailView');
     renderMonthDetail(year, month);
+}
+
+function applyJobFilter() {
+    if (currentMonthYear) {
+        const filterValue = document.getElementById('jobFilter').value;
+        renderMonthDetail(currentMonthYear.year, currentMonthYear.month, filterValue);
+    }
 }
 
 function showRemovePage() {
@@ -437,7 +447,7 @@ function renderMonthsList() {
 }
 
 // Render month detail
-function renderMonthDetail(year, month) {
+function renderMonthDetail(year, month, jobFilter = '') {
     const monthName = new Date(year, month).toLocaleDateString('de-DE', {
         month: 'long',
         year: 'numeric'
@@ -445,10 +455,15 @@ function renderMonthDetail(year, month) {
     document.getElementById('monthDetailTitle').textContent = monthName;
 
     // Filter entries for this month
-    const monthEntries = entries.filter(entry => {
+    let monthEntries = entries.filter(entry => {
         const date = new Date(entry.date);
         return date.getFullYear() === year && date.getMonth() === month;
     });
+
+    // Apply job filter if selected
+    if (jobFilter) {
+        monthEntries = monthEntries.filter(entry => entry.job === jobFilter);
+    }
 
     // Sort by date (newest first)
     monthEntries.sort((a, b) => new Date(b.date) - new Date(a.date));

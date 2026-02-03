@@ -487,6 +487,15 @@ button:hover {
     color: var(--accent);
 }
 
+.filter-container {
+    margin-bottom: 1.5rem;
+    max-width: 300px;
+}
+
+.filter-container .styled-select {
+    width: 100%;
+}
+
 .month-detail-content {
     /* Styles inherited from main container */
 }
