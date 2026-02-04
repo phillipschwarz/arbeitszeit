@@ -36,7 +36,16 @@
 
         <!-- Dashboard View -->
         <div id="dashboardView" class="view">
-            <h1>Dashboard</h1>
+            <h1 id="dashboardTitle">Dashboard</h1>
+
+            <div class="filter-container">
+                <select id="dashboardJobFilter" class="styled-select" onchange="applyDashboardJobFilter()">
+                    <option value="">Alle Stellen</option>
+                    <option value="Ganztag">Ganztag</option>
+                    <option value="Hausaufgabenbetreuung">Hausaufgabenbetreuung</option>
+                    <option value="Freitagsbetreuung">Freitagsbetreuung</option>
+                </select>
+            </div>
 
             <!-- Trend Chart -->
             <div class="chart-container">

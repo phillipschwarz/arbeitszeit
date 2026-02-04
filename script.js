@@ -26,7 +26,9 @@ function toggleTheme() {
 
     // Re-render chart with new theme colors
     if (trendChart && document.getElementById('dashboardView').classList.contains('active')) {
-        renderTrendChart();
+        const filterValue = document.getElementById('dashboardJobFilter').value;
+        const currentMonthEntries = getCurrentMonthEntries(filterValue);
+        renderTrendChart(currentMonthEntries);
     }
 }
 
@@ -91,8 +93,14 @@ async function loadEntries() {
 // Navigation
 function showDashboard() {
     setActiveView('dashboardView');
+    document.getElementById('dashboardJobFilter').value = ''; // Reset filter
     renderDashboard();
     closeMenu();
+}
+
+function applyDashboardJobFilter() {
+    const filterValue = document.getElementById('dashboardJobFilter').value;
+    renderDashboard(filterValue);
 }
 
 function showAddPage() {
@@ -201,18 +209,43 @@ async function addHours() {
     }
 }
 
+// Get current month entries
+function getCurrentMonthEntries(jobFilter = '') {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth();
+
+    let filtered = entries.filter(entry => {
+        const date = new Date(entry.date);
+        return date.getFullYear() === currentYear && date.getMonth() === currentMonth;
+    });
+
+    if (jobFilter) {
+        filtered = filtered.filter(entry => entry.job === jobFilter);
+    }
+
+    return filtered;
+}
+
 // Render dashboard
-function renderDashboard() {
-    renderTrendChart();
+function renderDashboard(jobFilter = '') {
+    // Update title with current month
+    const now = new Date();
+    const monthName = now.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
+    document.getElementById('dashboardTitle').textContent = monthName;
+
+    const currentMonthEntries = getCurrentMonthEntries(jobFilter);
+
+    renderTrendChart(currentMonthEntries);
 
     const tbody = document.getElementById('jobTableBody');
     tbody.innerHTML = '';
 
-    if (entries.length === 0) {
+    if (currentMonthEntries.length === 0) {
         tbody.innerHTML = `
             <tr>
                 <td colspan="4" style="text-align: center; color: #888; padding: 2rem;">
-                    Noch keine Einträge. Füge über "Optionen" → "Hinzufügen" Stunden hinzu.
+                    Noch keine Einträge für diesen Monat. Füge über "Optionen" → "Hinzufügen" Stunden hinzu.
                 </td>
             </tr>
         `;
@@ -222,7 +255,7 @@ function renderDashboard() {
 
     // Group entries by job type and sum hours
     const grouped = {};
-    entries.forEach(entry => {
+    currentMonthEntries.forEach(entry => {
         if (!grouped[entry.job]) {
             grouped[entry.job] = {
                 job: entry.job,
@@ -248,13 +281,15 @@ function renderDashboard() {
         tbody.appendChild(row);
     });
 
-    calculateTotal();
+    calculateTotal(currentMonthEntries);
 }
 
 // Render Trend Chart
-function renderTrendChart() {
+function renderTrendChart(filteredEntries = null) {
     const canvas = document.getElementById('trendChart');
     if (!canvas) return;
+
+    const entriesToUse = filteredEntries !== null ? filteredEntries : entries;
 
     // Get theme colors
     const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
@@ -264,7 +299,7 @@ function renderTrendChart() {
 
     // Group entries by day and calculate totals
     const dailyData = {};
-    entries.forEach(entry => {
+    entriesToUse.forEach(entry => {
         const date = new Date(entry.date).toISOString().split('T')[0];
 
         if (!dailyData[date]) {
@@ -376,8 +411,9 @@ function renderTrendChart() {
 
 
 // Calculate total
-function calculateTotal() {
-    const total = entries.reduce((sum, entry) => sum + parseFloat(entry.total), 0);
+function calculateTotal(filteredEntries = null) {
+    const entriesToUse = filteredEntries !== null ? filteredEntries : entries;
+    const total = entriesToUse.reduce((sum, entry) => sum + parseFloat(entry.total), 0);
     document.getElementById('totalAmount').textContent = `${Math.round(total)}€`;
 }
 
