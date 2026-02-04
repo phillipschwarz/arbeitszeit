@@ -6,14 +6,14 @@ Ein minimalistischer Arbeitszeitrechner mit Supabase-Backend und Light/Dark Them
 
 - ✅ **Stunden erfassen** mit automatischer Gehaltsberechnung
 - ✅ **Dashboard** mit Zusammenfassung nach Stellentyp
+- ✅ **Trend-Chart** — Visualisierung der täglichen Einnahmen mit Chart.js
+- ✅ **Job-Filter** — Filtern nach Stellentyp im Dashboard und Monatsansicht
 - ✅ **Monatsübersicht** mit Kalender-Navigation
 - ✅ **Detailansicht** pro Monat mit Datum-Sortierung
 - ✅ **Light & Dark Mode** mit Theme-Toggle (☀️/🌙)
 - ✅ **Supabase Backend** — Online PostgreSQL-Datenbank
 - ✅ **Auto-Deploy** via Vercel + GitHub
 - ✅ **Responsive Design** im OpenClaw-Docs-Stil
-
-Nur eine Testzeile
 
 ## 🚀 Live Demo
 
@@ -30,6 +30,7 @@ Nur eine Testzeile
 ## 🛠️ Tech Stack
 
 - **Frontend:** HTML, CSS (CSS Variables für Theming), Vanilla JavaScript
+- **Charts:** Chart.js für Trend-Visualisierung
 - **Database:** Supabase (PostgreSQL mit Row Level Security)
 - **Hosting:** Vercel (Auto-Deploy von GitHub)
 - **Design:** Dark/Light Theme mit OpenClaw Docs-Stil
@@ -106,17 +107,17 @@ open index.html
 ## 📝 Verwendung
 
 1. **Hinzufügen:** Stelle, Stunden und Datum eingeben
-2. **Dashboard:** Übersicht nach Stellentyp gruppiert
-3. **Monate:** Kalender-Karten mit Monatsübersicht
-4. **Entfernen:** Einzelne Einträge löschen
-5. **Zurücksetzen:** Alle Daten löschen (mit Bestätigung)
+2. **Dashboard:** Übersicht nach Stellentyp gruppiert mit Trend-Chart
+3. **Filtern:** Nach Stellentyp filtern im Dashboard oder Monatsansicht
+4. **Monate:** Kalender-Karten mit Monatsübersicht
+5. **Entfernen:** Einzelne Einträge löschen
 
 ## 🦡 Gebaut von
 
 Chester — mit Phillip's Hilfe
 
-**Entwicklungszeitraum:** 02.02.2026  
-**Commits:** Initial → Dark Theme → Light/Dark Toggle  
+**Entwicklungszeitraum:** 02.02.2026 – 04.02.2026
+**Features:** Dark/Light Theme, Trend-Chart, Job-Filter
 **Status:** ✅ Production-ready
 
 ---
