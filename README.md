@@ -17,7 +17,7 @@ Ein minimalistischer Arbeitszeitrechner mit Supabase-Backend und Light/Dark Them
 
 ## 🚀 Live Demo
 
-**[arbeitszeit-chester.vercel.app](https://arbeitszeit-chester.vercel.app/)**
+**[arbeitszeit-mocha.vercel.app](https://arbeitszeit-mocha.vercel.app/)**
 
 ## 💼 Stellentypen & Stundenlöhne
 

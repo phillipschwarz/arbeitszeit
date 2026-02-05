@@ -51,7 +51,7 @@ arbeitszeit/
 - Database: Supabase (PostgreSQL with Row Level Security)
 - Hosting: Vercel (Auto-Deploy from GitHub)
 
-**Live URL:** https://arbeitszeit-chester.vercel.app/
+**Live URL:** https://arbeitszeit-mocha.vercel.app/
 
 **Job Types & Hourly Rates:**
 | Job                     | Rate    |
