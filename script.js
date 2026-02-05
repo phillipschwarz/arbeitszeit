@@ -515,9 +515,13 @@ function renderMonthDetail(year, month, jobFilter = '') {
             year: 'numeric'
         });
 
+        // Get German weekday abbreviation
+        const weekday = date.toLocaleDateString('de-DE', { weekday: 'short' });
+
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${dateStr}</td>
+            <td>${weekday}</td>
             <td>${entry.job}</td>
             <td>${entry.hours}</td>
             <td>${Math.round(entry.total)}€</td>
